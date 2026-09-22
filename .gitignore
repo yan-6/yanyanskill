@@ -1,0 +1,11 @@
+# 复刻脚本的中间产物（跑 clone_workbench.py 时生成）
+clone_work/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# 系统
+.DS_Store
+Thumbs.db
