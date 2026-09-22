@@ -1,6 +1,6 @@
 # 资产样例：合格长什么样
 
-配套 `content-asset-loop` / `content-factory-kit` 支路 A 的 `sed-*` 动作使用。
+配套 `references/local/assets.md`（本机口径）使用，演示支路 A 的 `sed-*` 动作该产出什么。
 正面样例演示**结构**，反面样例是常见失败写法。
 
 > **全部样例均为虚构示范**，用来演示「合格长什么样」。

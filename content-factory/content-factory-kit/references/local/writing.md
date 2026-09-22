@@ -1,30 +1,13 @@
----
-name: content-writing-spec
-description: >-
-  创作小屋内容工厂的写作绑定层。规定领取到写作类任务（大纲 / 初稿 / 续写 / 扩写 / 缩写 / 增强观点 /
-  去 AI 味 / 口语化 / 优化开头结尾 / 起标题）时：先读套件里的通用写作规范，再按本层的个人判断标准
-  （两套声道的具体长相、词库、签名式元素、标题实测区间）与写回契约落笔。
-  当需要写正文、改稿、判断稿件是否达标时使用。
-  关键词：写正文、改稿、去 AI 味、缩写、扩写、起标题、写作规范、声道、词库、签名式元素。
-agent_created: true
----
-
-# 内容写作 · 本机绑定层
+# 写作 · 本机口径
 
 创作小屋（AI 自媒体运营工作台）的写作类任务，由领取任务的 WorkBuddy 亲自写——页面只把任务卡写进队列。
 
-> ## 通用规范在哪（先读它，再读本文）
+> ## 通用规范在哪
 >
-> 写作的通用规则——声道模型、通用六拍、七体裁骨架卡、篇幅配比、段落与句子、标题公式与禁忌、
-> 改稿细则（不可动清单 / 扩写 / 缩写 / 增强观点 / 口语化 / 开头结尾）、
-> **去 AI 味 10 类黑名单与逐条改写对照**、交付自查、失败降级——**唯一真源是**：
->
-> - **`~/.workbuddy/skills/content-factory-kit/references/writing.md`**
-> - **`~/.workbuddy/skills/content-factory-kit/references/deai.md`**
->   （去 AI 味逐条对照；本技能原来的 `references/deai-examples.md` 与它逐句相同，已删除并入）
->
-> 本文**不复述**上面那些，只写两样：**只对本账号生效的判断标准**、**本机写回契约**。
-> 改通用口径就改套件那两份；改个人风格就改本文与风格指南。
+> 写作的通用规则（声道模型、通用六拍、七体裁骨架卡、篇幅配比、段落与句子、标题公式与禁忌、
+> 改稿细则、**去 AI 味 10 类黑名单与逐条改写对照**、交付自查、失败降级）在
+> **`references/writing.md`** 与 **`references/deai.md`**。
+> 本文只写**只对本账号生效的判断标准**与**本机写回契约**。
 
 ## 何时使用
 
@@ -34,14 +17,14 @@ agent_created: true
 - 判断一份正文 / 标题 / 大纲能不能写回内容主表
 - 调整写作阶段的产出标准
 
-不适用：研究阶段（走 `content-research-spec`）、多平台改写（走 `content-platform-adapt`）、
-封面与配图（走 `content-visual-spec`）、资产沉淀（走 `content-asset-loop`）。
+不适用：研究阶段（走 `references/local/research.md`）、多平台改写（走 `references/local/platforms.md`）、
+封面与配图（走 `references/local/visual.md`）、资产沉淀（走 `references/local/assets.md`）。
 
 ## 一、两个真源的关系（别搞混）
 
 | 层 | 真源 | 管什么 |
 |---|---|---|
-| **通用规则** | `kit/references/writing.md` + `kit/references/deai.md` | 格式约定：骨架、七体裁卡、篇幅配比、改稿步骤、AI 味清单 |
+| **通用规则** | `references/writing.md` + `references/deai.md` | 格式约定：骨架、七体裁卡、篇幅配比、改稿步骤、AI 味清单 |
 | **个人判断标准** | 本文 §二 + `ai-workspace/风格指南-颜颜yan.md` | 两套声道长什么样、词库、签名、标题实测区间 |
 
 风格指南的 `DIGEST` 区块会随任务卡一起注入，写作前你手里已经有 8 条速用指令——
@@ -74,7 +57,7 @@ agent_created: true
 早期「【】栏目前缀 + 短教程体」已弃用，除非写的本来就是连载教程。
 
 > kit 里那段「中位 28 字、两段式 60%」是**别人样本**的参照系；本账号用上面这组。
-> 重跑口径：`python3 ~/.workbuddy/skills/content-factory-kit/scripts/measure_titles.py <你的语料>`
+> 重跑口径：`python3 scripts/measure_titles.py <你的语料>`
 
 ### 两套声道的具体长相（判定规则与表格见 kit；这里只写「本账号长什么样」）
 
@@ -107,7 +90,7 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin fail  <任务ID> --s
   **不要复用上轮文件名**。
 - JSON 键名必须与表字段名完全一致；输出里出现「跳过未知字段」说明键名写错了，要改。
 
-表 ID 与字段清单见 `content-research-spec/references/workbench-facts.md`。
+表 ID 与字段清单见 `references/local/workbench-facts.md`。
 
 ## 四、本机自查增量（kit 那份 12 条之外）
 
@@ -118,18 +101,14 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin fail  <任务ID> --s
 ## 五、本机踩过的坑
 
 - **别把 DIGEST 当成全部规范**。任务卡里注入的是 8 条速用指令；七体裁骨架、篇幅配比、
-  改稿细则、AI 味黑名单在 `kit/references/writing.md` / `kit/references/deai.md` 里，要去读。
+  改稿细则、AI 味黑名单在 `references/writing.md` / `references/deai.md` 里，要去读。
 - **改稿不是重写**。收到 expand / shorten / deai 时就地改，不要把整篇换成自己的写法——
   那会让改稿后风格断裂。
 - **「待核实」不能顺手删**。它看着像瑕疵，实际是必要的诚实标记。
 - **缩写时别删论证链**。删到「结论还在但不知道为什么」就是删过头了。
 
-## 六、相关规范（同一套内容工厂，按阶段分工）
+## 六、阶段分工
 
-| skill | 管什么 | 通用规范（真源，都在套件里） |
-|---|---|---|
-| `content-research-spec` | 研究阶段 | `kit/references/research.md` |
-| `content-writing-spec` | **本 skill**：写作与改稿 | `kit/references/writing.md` + `kit/references/deai.md` |
-| `content-platform-adapt` | 多平台改写 | `kit/references/platforms.md` |
-| `content-visual-spec` | 封面与配图、截图脱敏 | `kit/references/visual.md` |
-| `content-asset-loop` | 沉淀回流、素材库写回 | `kit/references/assets.md` |
+五个阶段（研究 → 写作改稿 → 多平台改写 → 封面配图 → 沉淀资产）各读哪份规范，
+见 `SKILL.md` 的「按动作 ID 取规范」表。本文只管**本阶段的本机落地**。
+

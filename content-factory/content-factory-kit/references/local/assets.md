@@ -1,23 +1,12 @@
----
-name: content-asset-loop
-description: 创作小屋内容工厂的资产循环绑定层。规定沉淀类动作（sed-*：提炼方法/选题方法/文章结构/Prompt/Skill 思路/金句/案例）该怎么落地：先读套件里的通用沉淀规范（5 条硬门槛、七类合格线、命名去重、写回契约），再按本层写回：页面入口、queue.py asset 命令、注入与排序的本机事实、真实好例。当需要执行队列里的沉淀类任务、给素材库补资产、判断一份「提炼产出」该不该入库、或调整「每次生成自动带上的历史资产」时使用。
-agent_created: true
----
-
-# 资产循环 · 本机绑定层
+# 资产循环 · 本机口径
 
 沉淀不是给这篇文章写结语，是给**下一篇**备料。
 
-> ## 通用规范在哪（先读它，再读本文）
+> ## 通用规范在哪
 >
-> 沉淀的通用规则——为什么要这个闭环、**合格资产 5 条硬门槛**、**七类资产各自的合格线**、
-> 命名规范、去重与淘汰、写回契约、写回前验收清单、常见坑、以及
-> **每类资产的「合格 / 不合格」完整对照分析**——**唯一真源是**：
->
-> - **`~/.workbuddy/skills/content-factory-kit/references/assets.md`**
-> - **`~/.workbuddy/skills/content-factory-kit/references/asset-examples.md`**
->   （本技能原来的 `references/asset-examples.md` 是它的**未脱敏版**，已删除并入这里）
->
+> 沉淀的通用规则（**合格资产 5 条硬门槛**、**七类资产各自的合格线**、命名规范、去重与淘汰、
+> 写回契约、写回前验收清单、常见坑、每类资产的「合格 / 不合格」完整对照分析）在
+> **`references/assets.md`** 与 **`references/asset-examples.md`**。
 > 本文只写**本机落地**：怎么触发、`queue.py asset` 命令、注入与排序的本机事实、真实好例。
 
 ## 何时使用
@@ -26,8 +15,8 @@ agent_created: true
 - 判断一份提炼产出该不该写进素材库表
 - 批量补历史资产、清理低质资产、调整注入规则
 
-不适用：研究类（走 `content-research-spec`）；正文写作与改稿（走 `content-writing-spec`）；
-多平台改写（走 `content-platform-adapt`）。
+不适用：研究类（走 `references/local/research.md`）；正文写作与改稿（走 `references/local/writing.md`）；
+多平台改写（走 `references/local/platforms.md`）。
 
 ## 一、怎么触发（本机入口）
 
@@ -66,7 +55,7 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin asset <任务ID> --j
 
 ## 三、本机口径与现状
 
-**单条上限口径 ≤300 字**（套件里写成「不超长」，具体数字在本层）：注入只取前 200 字，
+**单条上限口径 ≤300 字**（通用规范里写成「不超长」，具体数字在这里）：注入只取前 200 字，
 **结论必须在前 60 字内自成一句**。库里有条 423 字（Prompts）被截断后只剩开头——不要模仿。
 **星级缺省 4**，最该被复用的给 5。
 
@@ -86,7 +75,7 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin asset <任务ID> --j
 
 ## 四、本账号真实好例（命名规范的可信样本）
 
-套件里的好例是脱敏版（「某监控面板 + 消息调度」这种）。本账号的真实样本：
+通用规范里的好例是脱敏版（「某监控面板 + 消息调度」这种）。本账号的真实样本：
 
 | 分类 | 真实好例 |
 |---|---|
@@ -99,12 +88,8 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin asset <任务ID> --j
 
 判断标准始终是同一条：**换个选题还能不能直接用。**
 
-## 五、相关规范（同一套内容工厂，按阶段分工）
+## 五、阶段分工
 
-| skill | 管什么 | 通用规范（真源，都在套件里） |
-|---|---|---|
-| `content-research-spec` | 研究阶段 | `kit/references/research.md` |
-| `content-writing-spec` | 写作与改稿 | `kit/references/writing.md` + `kit/references/deai.md` |
-| `content-platform-adapt` | 多平台改写 | `kit/references/platforms.md` |
-| `content-visual-spec` | 封面与配图 | `kit/references/visual.md` |
-| `content-asset-loop` | **本 skill**：沉淀回流 | `kit/references/assets.md` + `kit/references/asset-examples.md` |
+五个阶段（研究 → 写作改稿 → 多平台改写 → 封面配图 → 沉淀资产）各读哪份规范，
+见 `SKILL.md` 的「按动作 ID 取规范」表。本文只管**本阶段的本机落地**。
+

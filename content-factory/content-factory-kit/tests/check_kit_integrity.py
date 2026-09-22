@@ -19,8 +19,19 @@ ROOT = os.path.abspath(sys.argv[1]) if len(sys.argv) > 1 else os.path.dirname(HE
 # 文档里出现的「技能根目录相对路径」形态
 PATH_RE = re.compile(r"(?:references|scripts|tests|assets)/[A-Za-z0-9_./-]+")
 
-# 合并前的三个技能名，不允许再出现在任何文档/脚本里（本脚本自己列清单，故排除自身）
-STALE = ["clone-content-workbench", "html-app-template-source", "content-factory-spec"]
+# 退役技能名清单的唯一数据源：tests/retired-skills.txt（两个自检共用，避免名单漂移）
+RETIRED_FILE = "tests/retired-skills.txt"
+
+
+def load_retired(root):
+    p = os.path.join(root, RETIRED_FILE)
+    if not os.path.isfile(p):
+        return []
+    with open(p, encoding="utf-8", errors="replace") as f:
+        return [ln.split("#", 1)[0].strip() for ln in f if ln.split("#", 1)[0].strip()]
+
+
+STALE = load_retired(os.path.dirname(HERE))
 
 # 必须存在的文件（合并时最容易漏掉的那几个）
 REQUIRED = [
@@ -36,10 +47,19 @@ REQUIRED = [
     "references/template-authoring.md",
     "references/workbench-clone.md",
     "references/workbench-schema.md",
+    # 本机口径（六合一后从 5 份绑定层下沉而来，缺一份就说明下沉没做全）
+    "references/local/research.md",
+    "references/local/writing.md",
+    "references/local/platforms.md",
+    "references/local/visual.md",
+    "references/local/assets.md",
+    "references/local/workbench-facts.md",
     "scripts/measure_titles.py",
     "scripts/clone_workbench.py",
     "tests/check_measure_titles.py",
     "tests/check_clone_workbench.py",
+    "tests/check_spec_bindings.py",
+    "tests/retired-skills.txt",
     "assets/ai-content-workspace-template.html",
 ]
 
@@ -94,15 +114,15 @@ desc = fm.split("description:", 1)[1] if "description:" in fm else ""
 ok("A5 description 够长（≥400 字）", len(desc.strip()) >= 400, "%d 字" % len(desc.strip()))
 
 # 三条支路的关键词都要能被检索到
-for kw in ["研究", "写作", "多平台", "配图", "资产沉淀", "模板源", "复刻", "风格指南"]:
+for kw in ["研究", "写作", "多平台", "配图", "资产沉淀", "模板源", "复刻", "风格指南",
+           "本机口径", "动作 ID"]:
     ok("A6 description 含关键词「%s」" % kw, kw in desc)
 
 # ── B. 引用完整性 ─────────────────────────────────────────────────────
 missing = []
-skip_self = {"tests/check_kit_integrity.py"}
+# 不需要任何 skip_self：退役名单已下沉成 tests/retired-skills.txt（.txt 不在扫描范围），
+# 负对照用的坏路径也不是字面量（见 check_spec_bindings.py，从真实文件名派生）。
 for f in MD_FILES + PY_FILES:
-    if f in skip_self:
-        continue
     for hit in set(PATH_RE.findall(read(os.path.join(ROOT, f)))):
         if hit in ALLOW_MISSING or hit.endswith("/"):
             continue
@@ -118,7 +138,7 @@ ok("C1 必需文件齐全（%d 个）" % len(REQUIRED), not gone, "缺: %s" % ",
 # ── D. 孤儿文件 & 旧名残留 ────────────────────────────────────────────
 corpus = "\n".join(read(os.path.join(ROOT, f)) for f in MD_FILES)
 subdir = [f for f in FILES if f.split("/")[0] in ("references", "scripts", "tests")
-          and not f.startswith("tests/fixtures") and f not in skip_self]
+          and not f.startswith("tests/fixtures")]
 orphans = []
 for f in subdir:
     base = os.path.basename(f)
@@ -129,13 +149,14 @@ ok("D1 无孤儿文件（每个都被文档提到）", not orphans, ", ".join(or
 
 stale_hits = []
 for f in MD_FILES + PY_FILES:
-    if f in skip_self:
-        continue
     body = read(os.path.join(ROOT, f))
     for name in STALE:
         if name in body:
             stale_hits.append("%s → %s" % (f, name))
 ok("D2 无残留旧技能名", not stale_hits, ", ".join(sorted(set(stale_hits))))
+# 名单读不到 = D2 变成空转（永远 PASS）—— 这类「检查自己失效」必须先自己报出来
+ok("D3 退役名单读到了（%d 个，否则 D2 是空转）" % len(STALE), len(STALE) >= 5,
+   "读了 %d 个" % len(STALE))
 
 # ── E. 支路 C 的脚本与产物 ────────────────────────────────────────────
 clone_py = os.path.join(ROOT, "scripts", "clone_workbench.py")

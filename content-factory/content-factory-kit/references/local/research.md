@@ -1,24 +1,13 @@
----
-name: content-research-spec
-description: 创作小屋内容工厂的研究绑定层。规定派发给 WorkBuddy 的研究/成篇任务（AI 任务队列）该怎么跑：先读套件里的通用研究规范，再按本机写回契约（queue.py 命令、落点字段、来源回流表 ID）写回工作台。当需要执行队列里的研究或一键成篇任务、判断研究产出是否达标、或要调整研究口径时使用。
-agent_created: true
----
-
-# 内容研究 · 本机绑定层
+# 研究 · 本机口径
 
 创作小屋（AI 自媒体运营工作台）里的研究，是 WorkBuddy 亲自联网做的：页面只生成一张任务卡写进队列，
 真正的检索、核查、成文都由领取任务的 WorkBuddy 完成。
 
-> ## 通用规范在哪（先读它，再读本文）
+> ## 通用规范在哪
 >
-> 研究的通用规则——执行前三件确认、检索策略、**8 段产出结构**、篇幅预算、
-> 写回前验收清单、失败与降级处置——**唯一真源是**：
->
-> **`~/.workbuddy/skills/content-factory-kit/references/research.md`**
-> （技能 `content-factory-kit` 支路 A；若套件装在别处，用技能名找到它）
->
-> **本 skill 不重复那份内容**，只写两样：**本机怎么写回**（命令、表 ID、落点字段）、
-> **本机踩过的坑**。改通用口径请改套件那份，别改这里——这里是绑定层，不是第二份规范。
+> 研究的通用规则（执行前三件确认、检索策略、**8 段产出结构**、篇幅预算、写回前验收清单、
+> 失败与降级处置）在 **`references/research.md`**。
+> 本文只写**本机怎么写回**（命令、表 ID、落点字段）与**本机踩过的坑**。
 
 ## 何时使用
 
@@ -28,7 +17,7 @@ agent_created: true
 - 调整研究阶段的产出标准、验收口径
 
 不适用：页面视觉与交互改动（走 `library-live-page-update`）；纯粹的选题推荐（走每日选题流水线）；
-写作与改稿（走 `content-writing-spec`）。
+写作与改稿（走 `references/local/writing.md`）。
 
 ## 一、本机工具映射
 
@@ -58,7 +47,7 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin sources <内容ID> -
 - JSON 键名必须与目标表字段名完全一致；出现「跳过未知字段」说明键名写错。
 - 队列表 **13 个字段全是 text**，写队列一律 `{"text": "…"}`。
 
-字段与表 ID 对照、payload 格式见 `references/workbench-facts.md`。
+字段与表 ID 对照、payload 格式见 `references/local/workbench-facts.md`。
 
 ## 三、来源回流（本机参数）
 
@@ -78,7 +67,7 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin sources <内容ID> -
 - `--dry` 输出形如 `研究资料表：<内容ID> 现有来源 0 条，本次待写 8 条`，下面逐条列出将写入的记录；
   看到「跳过：…」就是被过滤的条目。
 - 需要**批量补写历史来源**时才用底层 `batch_add_database_records.py`
-  （payload 与踩坑见 `references/workbench-facts.md`）。
+  （payload 与踩坑见 `references/local/workbench-facts.md`）。
 
 ## 四、本机踩过的坑
 
@@ -93,15 +82,8 @@ printf '%s' "$TOKEN" | python3 tools/queue.py --token-stdin sources <内容ID> -
 
 - 正文超限返工是高频问题：曾首稿 3414 字（超 2500）被压到 2487 才写回——按 ≤2400 字起稿可省一轮。
 
-## 六、相关规范（同一套内容工厂，按阶段分工）
+## 六、阶段分工
 
-| skill | 管什么 | 通用规范（真源，都在套件里） |
-|---|---|---|
-| `content-research-spec` | **本 skill**：研究阶段 | `kit/references/research.md` |
-| `content-writing-spec` | 写作与改稿：声道、骨架六拍、标题、去 AI 味 | `kit/references/writing.md` + `kit/references/deai.md` |
-| `content-platform-adapt` | 多平台改写 | `kit/references/platforms.md` |
-| `content-visual-spec` | 封面与配图、截图脱敏 | `kit/references/visual.md` |
-| `content-asset-loop` | 沉淀回流、素材库写回 | `kit/references/assets.md` |
+五个阶段（研究 → 写作改稿 → 多平台改写 → 封面配图 → 沉淀资产）各读哪份规范，
+见 `SKILL.md` 的「按动作 ID 取规范」表。本文只管**本阶段的本机落地**。
 
-研究做完 → 写作改稿 → 多平台改写 → 封面配图 → 沉淀资产，各由对应规范接管；
-本 skill 只管**研究阶段的本机落地**。

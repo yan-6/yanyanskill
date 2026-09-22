@@ -1,0 +1,21 @@
+# 已退役的技能名 —— 唯一数据源。
+#
+# 为什么单独一个文件：任何「不许再出现 X」的自检都必须写出 X，这没法绕；
+# 但**两份自检各抄一份名单就会漂移**（曾经就是这样）。所以名单放这里，
+# check_kit_integrity.py（结构自检）与 check_spec_bindings.py（两层接线自检）都读它。
+# 这份文件本身是数据，不是残留，两个检查都把它排除在扫描范围外。
+#
+# 加名字的时机：合并技能、改名、删除技能时。每行一个名字，`#` 起首为注释。
+
+# ── 第一批 · 2026-09-21 三合一 ──────────────────────────────
+clone-content-workbench
+html-app-template-source
+content-factory-spec
+
+# ── 第二批 · 2026-09-22 六合一 ──────────────────────────────
+# 5 份绑定层下沉成 content-factory-kit/references/local/，对外只剩一个技能
+content-research-spec
+content-writing-spec
+content-platform-adapt
+content-visual-spec
+content-asset-loop
