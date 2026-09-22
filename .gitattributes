@@ -1,0 +1,5 @@
+# 模板产物是数据资产（内置复刻清单 + 内嵌字体/纹理），按原字节保存，不做换行符转换
+content-factory/content-factory-kit/assets/*.html -text
+
+# 其余按 Git 默认处理
+* text=auto
